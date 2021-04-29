@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script type="text/javascript" src="jquery-2.2.4.min.js"></script>
+    <script type="text/javascript">
+    function verifySing() {
+      var formData = new FormData();
+      formData.append("upload", $("#file-check-sign")[0].files[0]);
+      $.ajax({
+        url: "https://murachi.cenditel.gob.ve/Murachi/0.1/archivos/firmados",
+        xhrFields: {withCredentials: true},
+        headers: {"Authorization":"Basic YWRtaW46YWRtaW4="},
+        type: "post",
+        dataType: "json",
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+          var responseString = JSON.stringify(response);
+          document.getElementById("respuestaVerificacion").innerHTML = responseString;
+        }, error: function(response) {
+          $("#respuestaVerificacion").html('Error...!!!');
+        }
+      });
+    }
+  </script>
+  </head>
+<body>
+  <h2>Verificar la firma electrónica con Murachí</h2>
+  <p>Seleccione un archivo PDF</p>
+  <form enctype="multipart/form-data" action="javaScript:verifySing()" method="post" id="verificar"> 
+    <input id="file-check-sign" class="file" type="file" data-min-file-count="1" name="upload" accept=".pdf">
+    <br>
+    <br>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+    <button type="reset" id="resetVerificacion" class="btn btn-default">Limpiar</button>
+    <br>
+    <br>
+    <div id="respuestaVerificacion"></div>
+  </form>
+</body>
+</html>
